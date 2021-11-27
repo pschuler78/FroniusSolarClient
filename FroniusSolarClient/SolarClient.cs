@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using FroniusSolarClient.Entities.SolarAPI.V1.PowerFlowRealtimeData;
+using FroniusSolarClient.Entities.SolarAPI.V1.MeterRealtimeData;
 
 namespace FroniusSolarClient
 {
@@ -21,6 +22,7 @@ namespace FroniusSolarClient
         private InverterRealtimeDataService _inverterRealtimeDataService;
         private InverterArchiveDataService _inverterArchiveDataService;
         private PowerFlowRealtimeDataService _powerFlowRealtimeDataService;
+        private MeterRealtimeDataService _meterRealtimeDataService;
 
         public SolarClient(string url, int version, ILogger logger)
         {
@@ -31,6 +33,7 @@ namespace FroniusSolarClient
             _inverterRealtimeDataService = new InverterRealtimeDataService(_restClient);
             _inverterArchiveDataService = new InverterArchiveDataService(_restClient);
             _powerFlowRealtimeDataService = new PowerFlowRealtimeDataService(_restClient);
+            _meterRealtimeDataService = new MeterRealtimeDataService(_restClient);
         }
 
         /// <summary>
@@ -97,6 +100,16 @@ namespace FroniusSolarClient
         public Response<PowerFlowRealtimeData> GetPowerFlowRealtimeData()
         {
             return _powerFlowRealtimeDataService.GetPowerFlowRealtimeData();
+        }
+
+        public Response<Dictionary<int, MeterRealtimeData>> GetSystemMeterData()
+        {
+            return _meterRealtimeDataService.GetSystemMeterData();
+        }
+
+        public Response<MeterRealtimeData> GetDeviceMeterData(int deviceId = 0)
+        {
+            return _meterRealtimeDataService.GetDeviceMeterData(deviceId);
         }
     }
 }
